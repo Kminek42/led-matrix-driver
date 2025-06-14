@@ -52,20 +52,16 @@ void display_driver_render_text(const char *text) {
     }
 }
 
-void display_driver_scan(display_driver_row_callback_t row_callback) {
+void display_driver_scan(void) {
     static uint8_t last_row = 0;
-    if (!row_callback || !image_buffer) return;
+    if (!driver_config.row_output_callback || !image_buffer) return;
 
     uint8_t bytes_per_row = (driver_config.display_width + 7) / 8;
     uint8_t row = last_row;
 
-    uint8_t row_data[bytes_per_row];
-    memset(row_data, 0, bytes_per_row);
-
     const uint8_t *src = image_buffer + row * bytes_per_row;
-    memcpy(row_data, src, bytes_per_row);
 
-    row_callback(row, row_data, &driver_config);
+    driver_config.row_output_callback(row, (uint8_t*)src, &driver_config);
 
     last_row = (last_row + 1) % driver_config.display_height;
 }
