@@ -18,3 +18,5 @@ void display_driver_scan(display_driver_row_callback_t row_callback);
 void display_driver_set_image(const uint8_t *image_data);
 
 void display_driver_render_text(const char *text);
+
+void display_driver_show_display();

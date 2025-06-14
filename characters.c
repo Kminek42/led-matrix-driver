@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include "characters.h"
 
 const uint8_t font[][7] = {
 // A,
