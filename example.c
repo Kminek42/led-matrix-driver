@@ -1,37 +1,48 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 #include "display_driver.h"
+#include "graphic_renderer.h"
 
-void my_row_output_callback(uint16_t row_n, uint8_t* row_data, display_driver_config_t *config) {
-    printf("Row %d: ", row_n);
-    uint16_t indent = config->display_height - row_n;
-    while(indent) {
-        putchar(' ');
-        indent -= 1;
-    }
-    for (int col = 0; col < config->display_width; col++) {
-        uint8_t pixel = row_data[col];
-        putchar(pixel ? '#' : '.');
-        putchar(' ');
-    }
-    printf("\n");
+void gpio_set_level(int16_t gpio, int16_t level) {
+    printf("gpio: %d, level: %d\n", gpio, level);
 }
 
+void delay_us(int16_t us) {
+    printf("Sleeping for %dus...\n", us);
+}
+
+#define SCREEN_WIDTH (24)
+#define SCREEN_HEIGHT (7)
+
 int main() {
-    display_driver_config_t config = {
-        .display_width = 64,
-        .display_height = 8,
-        .row_output_callback = my_row_output_callback,
+    uint8_t* image_buffer = (uint8_t*) malloc(SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint8_t));
+
+    graphic_renderer_config_t renderer_config = {
+        .height = SCREEN_HEIGHT,
+        .width = SCREEN_WIDTH,
+        .image_buffer = image_buffer
     };
-    display_driver_init(&config);
-    display_driver_render_text("Kminek42");
-    display_driver_show_display();
-    display_driver_scan();
-    display_driver_scan();
-    display_driver_scan();
-    display_driver_scan();
-    display_driver_scan();
-    display_driver_scan();
-    display_driver_scan();
-    display_driver_scan();
+
+    graphic_renderer_data_t* renderer = graphic_renderer_init(&renderer_config);
+
+
+    display_driver_config_t display_config = {
+        .data_clk_pin = 1,
+        .data_pin = 2,
+        .refresh_clk_pin = 3,
+        .display_height = SCREEN_HEIGHT,
+        .display_width = SCREEN_WIDTH,
+        .set_gpio = gpio_set_level,
+        .delay_us = delay_us
+    };
+
+    display_driver_data_t* display = display_driver_init(&display_config);
+
+    graphic_renderer_render_text(renderer, "hello");
+    graphic_renderer_show_display(renderer);
+
+    display_driver_scan(display, image_buffer);
+
     return 0;
 }
