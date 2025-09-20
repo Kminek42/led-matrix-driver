@@ -31,7 +31,8 @@ void graphic_renderer_render_text(graphic_renderer_data_t* renderer, char* text)
         for (uint16_t row = 0; row < 7; row++) {
             for (uint16_t col = 0; col < CHARACTER_WIDTH; col++) {
                 uint8_t bit_value = (character[row] & (1 << (8 - col))) > 0;
-                renderer->image_buffer[row * renderer->width + char_index * CHARACTER_WIDTH + col] = bit_value ? 1 : 0;
+                uint16_t pixel_id = row * renderer->width + char_index * CHARACTER_WIDTH + col;
+                renderer->image_buffer[pixel_id] = bit_value ? 1 : 0;
             }
         }
 
