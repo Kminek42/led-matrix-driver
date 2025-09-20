@@ -13,4 +13,11 @@ graphic_renderer_data_t* graphic_renderer_init(graphic_renderer_config_t* config
 
 void graphic_renderer_render_text(graphic_renderer_data_t* renderer, char* text);
 
+void graphic_renderer_render_plot(
+    graphic_renderer_data_t* renderer,
+    float (*function)(float x),
+    float x_start,
+    float x_end
+);
+
 void graphic_renderer_show_display(graphic_renderer_data_t* renderer);

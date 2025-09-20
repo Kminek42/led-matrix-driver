@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "display_driver.h"
 #include "graphic_renderer.h"
+#include "math.h"
 
 void gpio_set_level(int16_t gpio, int16_t level) {
     printf("gpio: %d, level: %d\n", gpio, level);
@@ -14,6 +15,10 @@ void delay_us(int16_t us) {
 
 #define SCREEN_WIDTH (24)
 #define SCREEN_HEIGHT (7)
+
+float f(float x) {
+    return x * x * x;
+}
 
 int main() {
     uint8_t* image_buffer = (uint8_t*) malloc(SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint8_t));
@@ -39,10 +44,11 @@ int main() {
 
     display_driver_data_t* display = display_driver_init(&display_config);
 
-    graphic_renderer_render_text(renderer, "hello");
+    // graphic_renderer_render_text(renderer, "hello");
+    graphic_renderer_render_plot(renderer, sinf, -5, 5);
     graphic_renderer_show_display(renderer);
 
-    display_driver_scan(display, image_buffer);
+    // display_driver_scan(display, image_buffer);
 
     return 0;
 }
