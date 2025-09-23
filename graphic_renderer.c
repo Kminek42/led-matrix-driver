@@ -59,7 +59,9 @@ void graphic_renderer_render_text(graphic_renderer_data_t* renderer, char* text)
 
 void graphic_renderer_render_plot(
     graphic_renderer_data_t* renderer,
-    float (*function)(float x),
+    float (*function)(float x, float* params, uint16_t params_n),
+    float* params,
+    uint16_t params_n,
     float x_start,
     float x_end
 ) {
@@ -69,7 +71,7 @@ void graphic_renderer_render_plot(
 
     for (uint16_t col = 0; col < renderer->width; col++) {
         float x = x_start + ((float)col) * x_axis_coef;
-        float f_value = function(x);
+        float f_value = function(x, params, params_n);
 
         if (f_value > f_max) {
             f_max = f_value;
@@ -90,7 +92,7 @@ void graphic_renderer_render_plot(
 
     for (uint16_t col = 0; col < renderer->width; col++) {
         float x = x_start + ((float)col) * x_axis_coef;
-        float f_value = (function(x) - f_min) * y_axis_coef;
+        float f_value = (function(x, params, params_n) - f_min) * y_axis_coef;
         uint16_t f_value_row = (uint16_t) (f_value * ((float) (renderer->height - 1) + 0.5f));
         f_value_row = renderer->height - f_value_row - 1;
 
