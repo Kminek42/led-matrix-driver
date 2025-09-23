@@ -21,9 +21,9 @@ graphic_renderer_data_t* graphic_renderer_init(graphic_renderer_config_t* config
 }
 
 void graphic_renderer_put_pixel(
-    graphic_renderer_data_t* renderer, 
-    uint16_t row, 
-    uint16_t col, 
+    graphic_renderer_data_t* renderer,
+    uint16_t row,
+    uint16_t col,
     uint8_t value
 ) {
     uint16_t pixel_id = row * renderer->width + col;
@@ -43,9 +43,9 @@ void graphic_renderer_render_text(graphic_renderer_data_t* renderer, const char*
             for (uint16_t col = 0; col < CHARACTER_WIDTH; col++) {
                 uint8_t bit_value = (character[row] & (1 << (8 - col))) > 0;
                 graphic_renderer_put_pixel(
-                    renderer, 
-                    row, 
-                    char_index * CHARACTER_WIDTH + col, 
+                    renderer,
+                    row,
+                    char_index * CHARACTER_WIDTH + col,
                     bit_value
                 );
             }
@@ -80,10 +80,12 @@ void _make_plot_continous(graphic_renderer_data_t* renderer) {
         int16_t difference = current_height - last_height;
         int16_t direction = (difference > 0) - (difference < 0);
         uint16_t row = last_height;
-    
-        for (uint32_t i = 0; i < abs(difference); i++) {
-            graphic_renderer_put_pixel(renderer, row, col, 1);
-            row += direction;
+
+        if (abs(difference) > 1) {
+            for (int32_t i = 0; i < abs(difference); i++) {
+                graphic_renderer_put_pixel(renderer, row, col, 1);
+                row += direction;
+            }
         }
 
         last_height = current_height;
@@ -123,7 +125,7 @@ void graphic_renderer_render_plot(
     for (uint16_t col = 0; col < renderer->width; col++) {
         float x = x_start + ((float)col) * x_axis_coef;
         float f_value = (function(x, params) - f_min) * y_axis_coef;
-        uint16_t f_value_row = (uint16_t) (f_value * ((float) (renderer->height - 1) + 0.5f));
+        uint16_t f_value_row = (uint16_t)(f_value * ((float)(renderer->height - 1) + 0.5f));
         f_value_row = renderer->height - f_value_row - 1;
 
         graphic_renderer_put_pixel(renderer, f_value_row, col, 1);
