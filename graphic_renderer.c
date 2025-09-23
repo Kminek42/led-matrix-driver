@@ -58,6 +58,38 @@ void graphic_renderer_render_text(graphic_renderer_data_t* renderer, const char*
     }
 }
 
+int16_t get_last_pixel_row(graphic_renderer_data_t* renderer, uint32_t column) {
+    uint32_t row = 0;
+
+    while (row < renderer->height) {
+        uint32_t pixel_id = row * renderer->width + column;
+        if (renderer->image_buffer[pixel_id]) {
+            return row;
+        }
+        row += 1;
+    }
+
+    return -1;
+}
+
+void _make_plot_continous(graphic_renderer_data_t* renderer) {
+    int16_t last_height = get_last_pixel_row(renderer, 0);
+    for (uint32_t col = 1; col < renderer->width; col++) {
+        int16_t current_height = get_last_pixel_row(renderer, col);
+
+        int16_t difference = current_height - last_height;
+        int16_t direction = (difference > 0) - (difference < 0);
+        uint16_t row = last_height;
+    
+        for (uint32_t i = 0; i < abs(difference); i++) {
+            graphic_renderer_put_pixel(renderer, row, col, 1);
+            row += direction;
+        }
+
+        last_height = current_height;
+    }
+}
+
 void graphic_renderer_render_plot(
     graphic_renderer_data_t* renderer,
     float (*function)(float x, float* params),
@@ -96,6 +128,8 @@ void graphic_renderer_render_plot(
 
         graphic_renderer_put_pixel(renderer, f_value_row, col, 1);
     }
+
+    _make_plot_continous(renderer);
 }
 
 void graphic_renderer_clear(graphic_renderer_data_t* renderer) {

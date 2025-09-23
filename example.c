@@ -17,7 +17,7 @@ void delay_us(int16_t us) {
 #define SCREEN_HEIGHT (7)
 
 float f(float x, float* params) {
-    return x * x * x + params[0] * x;
+    return x < params[0];
 }
 
 int main() {
