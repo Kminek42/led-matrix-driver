@@ -80,14 +80,12 @@ void graphic_renderer_render_plot(
         }
     }
 
-    printf("f_min = %f\tf_max = %f\n", f_min, f_max);
 
     float y_axis_coef = 0.f;
     if (f_max - f_min > 1e-3f) {
         y_axis_coef = 1.f / (f_max - f_min);
     }
 
-    printf("y_axis_coef: %f\n", y_axis_coef);
 
     for (uint16_t col = 0; col < renderer->width; col++) {
         float x = x_start + ((float)col) * x_axis_coef;
