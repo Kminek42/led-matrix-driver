@@ -2,6 +2,7 @@
 #include "characters.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 struct graphic_renderer_data {
     uint8_t width;
@@ -95,6 +96,11 @@ void graphic_renderer_render_plot(
 
         graphic_renderer_put_pixel(renderer, f_value_row, col, 1);
     }
+}
+
+void graphic_renderer_clear(graphic_renderer_data_t* renderer) {
+    uint32_t pixels_to_clear = renderer->height * renderer->width * sizeof(uint8_t);
+    memset(renderer->image_buffer, 0, pixels_to_clear);
 }
 
 void graphic_renderer_show_display(graphic_renderer_data_t* renderer) {

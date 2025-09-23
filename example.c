@@ -16,8 +16,8 @@ void delay_us(int16_t us) {
 #define SCREEN_WIDTH (24)
 #define SCREEN_HEIGHT (7)
 
-float f(float x) {
-    return x * x * x;
+float f(float x, float* params) {
+    return x * x * x + params[0] * x;
 }
 
 int main() {
@@ -44,9 +44,12 @@ int main() {
 
     display_driver_data_t* display = display_driver_init(&display_config);
 
-    // graphic_renderer_render_text(renderer, "hello");
-    float* params;
-    graphic_renderer_render_plot(renderer, sinf, params, 0, -5, 5);
+    graphic_renderer_render_text(renderer, "Hi!");
+    graphic_renderer_show_display(renderer);
+
+    float params[1] = {1.f};
+    graphic_renderer_clear(renderer);
+    graphic_renderer_render_plot(renderer, f, params, -5, 5);
     graphic_renderer_show_display(renderer);
 
     // display_driver_scan(display, image_buffer);
