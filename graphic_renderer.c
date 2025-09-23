@@ -29,7 +29,7 @@ void graphic_renderer_put_pixel(
     renderer->image_buffer[pixel_id] = value;
 }
 
-void graphic_renderer_render_text(graphic_renderer_data_t* renderer, char* text) {
+void graphic_renderer_render_text(graphic_renderer_data_t* renderer, const char* text) {
     uint16_t char_index = 0;
 
     char c = text[char_index];

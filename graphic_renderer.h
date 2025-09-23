@@ -11,7 +11,7 @@ typedef struct graphic_renderer_data graphic_renderer_data_t;
 
 graphic_renderer_data_t* graphic_renderer_init(graphic_renderer_config_t* config);
 
-void graphic_renderer_render_text(graphic_renderer_data_t* renderer, char* text);
+void graphic_renderer_render_text(graphic_renderer_data_t* renderer, const char* text);
 
 
 void graphic_renderer_render_plot(
