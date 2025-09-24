@@ -44,7 +44,7 @@ int main() {
 
     display_driver_data_t* display = display_driver_init(&display_config);
 
-    graphic_renderer_render_text(renderer, "Hi!");
+    graphic_renderer_render_text(renderer, " 4/3");
     graphic_renderer_show_display(renderer);
 
     float params[1] = {1.f};
