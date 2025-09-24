@@ -593,6 +593,15 @@ dot_matrix_font = {
         "     ",
         "  #  "
     ],
+    '%': [
+        "##  ",
+        "##  #",
+        "   # ",
+        "  #  ",
+        " #   ",
+        "#  ##",
+        "   ##",
+    ],
     ' ': [ # Space character
         "     ",
         "     ",
@@ -692,7 +701,7 @@ def mappings_to_c(characters: dict) -> str:
 
 output_path = 'characters.c'
 with open(output_path, 'w') as f:
-    f.write('#include <stdint.h>\n\n')
+    f.write('#include "characters.h"\n\n')
     f.write('const uint8_t font[][7] = {\n')
     f.write(all_characters_to_c())
     f.write('\n};\n')

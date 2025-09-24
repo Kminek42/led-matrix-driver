@@ -661,6 +661,16 @@ const uint8_t font[][7] = {
     0b00000000,
     0b00100000
 },
+// %,
+{
+    0b11000000,
+    0b11001000,
+    0b00010000,
+    0b00100000,
+    0b01000000,
+    0b10011000,
+    0b00011000
+},
 // Space,
 {
     0b00000000,
@@ -742,7 +752,8 @@ const uint8_t* get_character(char character) {
         case ',': return font[63]; // ,
         case '!': return font[64]; // !
         case '?': return font[65]; // ?
-        case ' ': return font[66]; //  
+        case '%': return font[66]; // %
+        case ' ': return font[67]; //  
         default: return font[0]; // Default to space character
     }
 }
