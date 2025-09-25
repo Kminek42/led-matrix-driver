@@ -15,7 +15,10 @@ typedef struct display_driver_data display_driver_data_t;
 
 display_driver_data_t* display_driver_init(display_driver_config_t* config);
 void display_driver_scan(
-    display_driver_data_t* display, 
-    uint8_t* displayed_image_buffer, 
+    display_driver_data_t* display,
+    uint8_t* displayed_image_buffer,
     uint8_t* staging_image_buffer
 );
+
+void display_driver_take_buffor(display_driver_data_t* display);
+void display_driver_release_buffor(display_driver_data_t* display);

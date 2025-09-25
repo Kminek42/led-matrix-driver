@@ -7,12 +7,14 @@
 struct display_driver_data {
     display_driver_config_t* config;
     uint16_t last_row;
+    uint8_t buffor_busy;
 };
 
 display_driver_data_t* display_driver_init(display_driver_config_t* config) {
     display_driver_data_t* driver_data = malloc(sizeof(display_driver_data_t));
     driver_data->config = config;
     driver_data->last_row = 0;
+    driver_data->buffor_busy = 0;
 
     return driver_data;
 }
@@ -92,6 +94,14 @@ void display_send_row(uint16_t row_n, uint8_t* row_data, display_driver_config_t
     config->delay_us(1);
 }
 
+void display_driver_take_buffor(display_driver_data_t* display) {
+    display->buffor_busy = 1;
+}
+
+void display_driver_release_buffor(display_driver_data_t* display) {
+    display->buffor_busy = 0;
+}
+
 void display_driver_scan(
     display_driver_data_t* display,
     uint8_t* displayed_image_buffer,
@@ -104,7 +114,7 @@ void display_driver_scan(
     display->last_row = (display->last_row + 1) % display->config->display_height;
 
     uint32_t image_size = display->config->display_width * display->config->display_height;
-    if (display->last_row == 0) {
+    if (display->last_row == 0 && !display->buffor_busy) {
         memcpy(displayed_image_buffer, staging_image_buffer, image_size);
     }
 }

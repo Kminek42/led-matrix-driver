@@ -121,7 +121,7 @@ void graphic_renderer_render_plot(
         y_axis_coef = 1.f / (f_max - f_min);
     }
 
-
+    graphic_renderer_clear(renderer);
     for (uint16_t col = 0; col < renderer->width; col++) {
         float x = x_start + ((float)col) * x_axis_coef;
         float f_value = (function(x, params) - f_min) * y_axis_coef;
