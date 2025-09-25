@@ -92,10 +92,19 @@ void display_send_row(uint16_t row_n, uint8_t* row_data, display_driver_config_t
     config->delay_us(1);
 }
 
-void display_driver_scan(display_driver_data_t* display, uint8_t* image_buffer) {
+void display_driver_scan(
+    display_driver_data_t* display,
+    uint8_t* displayed_image_buffer,
+    uint8_t* staging_image_buffer
+) {
     uint32_t start_index = display->last_row * display->config->display_width;
-    uint8_t* row_data = (uint8_t*)(image_buffer + start_index);
+    uint8_t* row_data = (uint8_t*)(displayed_image_buffer + start_index);
     display_send_row(display->last_row, row_data, display->config);
 
     display->last_row = (display->last_row + 1) % display->config->display_height;
+
+    uint32_t image_size = display->config->display_width * display->config->display_height;
+    if (display->last_row == 0) {
+        memcpy(displayed_image_buffer, staging_image_buffer, image_size);
+    }
 }
